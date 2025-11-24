@@ -3,17 +3,17 @@ document.addEventListener("DOMContentLoaded", function () {
   var instances = M.Collapsible.init(elems, {});
 });
 
-const addUserButton = document.getElementById("add_user_button");
-addUserButton.addEventListener("click", () => {
-  document.querySelector(".add-user-modal").classList.add("show");
-  document.querySelector(".add-user-modal-back").classList.remove("dis-none");
-});
-document
-  .querySelector(".add-user-modal-back")
-  .addEventListener("click", (e) => {
-    document.querySelector(".add-user-modal").classList.remove("show");
-    e.target.classList.add("dis-none");
-  });
+// const addUserButton = document.getElementById("add_user_button");
+// addUserButton.addEventListener("click", () => {
+//   document.querySelector(".add-user-modal").classList.add("show");
+//   document.querySelector(".add-user-modal-back").classList.remove("dis-none");
+// });
+// document
+//   .querySelector(".add-user-modal-back")
+//   .addEventListener("click", (e) => {
+//     document.querySelector(".add-user-modal").classList.remove("show");
+//     e.target.classList.add("dis-none");
+//   });
 
 // fetch("https://jsonplaceholder.typicode.com/users")
 //   .then((response) => response.json())

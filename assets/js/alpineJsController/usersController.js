@@ -1,5 +1,6 @@
 document.addEventListener("alpine:init", () => {
   Alpine.data("usersData", () => ({
+    mainUsers: [],
     users: [],
     pageUsers: [],
     itemsCount: 4,
@@ -7,14 +8,26 @@ document.addEventListener("alpine:init", () => {
     pageCount: 1,
     isLoading: false,
     showAddModal: false,
+    searchChar: "",
+    newUserInfo: {
+      name: "",
+      username: "",
+      email: "",
+      address: "",
+    },
     getUsers() {
       this.isLoading = true;
-      axios.get("https://jsonplaceholder.typicode.com/users").then((res) => {
-        console.log(res);
-        this.users = res.data;
-        this.pagination();
-        this.isLoading = false;
-      });
+      axios
+        .get("https://jsonplaceholder.typicode.com/users")
+        .then((res) => {
+          console.log(res);
+          this.users = res.data;
+          this.mainUsers = res.data;
+          this.pagination();
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
 
     pagination() {
@@ -49,6 +62,46 @@ document.addEventListener("alpine:init", () => {
       if (value > this.users.length) {
         this.itemsCount = this.users.length;
       }
+    },
+
+    handleSearch(value) {
+      this.users = this.mainUsers.filter(
+        (user) =>
+          user.name.includes(value) ||
+          user.username.includes(value) ||
+          user.email.includes(value)
+      );
+      this.currentPage = 1;
+      this.pagination();
+    },
+
+    handleAddUserForm() {
+      this.isLoading = true;
+      axios
+        .post("https://jsonplaceholder.typicode.com/users", this.newUserInfo)
+        .then((res) => {
+          if (res.status == 201) {
+            this.mainUsers.push(this.newUserInfo);
+            this.pagination();
+            this.showAddModal = false;
+            this.handleResetForm();
+            M.toast({
+              html: "کاربر با موفقیت ایجاد شد",
+              classes: "rounded green",
+            });
+          }
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    handleResetForm() {
+      this.newUserInfo = {
+        name: "",
+        username: "",
+        email: "",
+        address: "",
+      };
     },
   }));
 });
